@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCA Green Coffee Grading Calculator</title>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; background: #f8fafc; color: #1e293b; padding: 20px; margin: 0; }
+    .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    h1 { margin-top: 0; font-size: 22px; color: #0f172a; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 16px; }
+    @media (max-width: 650px) { .grid { grid-template-columns: 1fr; } }
+    .card { background: #f1f5f9; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; }
+    h2 { font-size: 15px; margin-top: 0; color: #1e40af; border-bottom: 2px solid #cbd5e1; padding-bottom: 6px; }
+    .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 13px; }
+    .row input { width: 75px; padding: 5px 8px; text-align: right; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 14px; }
+    .badge { font-size: 11px; color: #64748b; }
+    .results { margin-top: 24px; padding: 18px; border-radius: 8px; background: #e0f2fe; border-left: 5px solid #0284c7; }
+    .stat-row { display: flex; gap: 15px; margin-top: 10px; }
+    .stat { background: #fff; padding: 10px 16px; border-radius: 6px; text-align: center; flex: 1; border: 1px solid #cbd5e1; }
+    .stat-val { font-size: 20px; font-weight: bold; color: #0f172a; }
+    .stat-lbl { font-size: 11px; color: #64748b; text-transform: uppercase; margin-top: 2px; }
+    .grade-tag { display: inline-block; margin-top: 12px; padding: 8px 14px; border-radius: 6px; font-weight: bold; color: #fff; font-size: 15px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>☕ SCA Green Coffee Grading Calculator</h1>
+  <div style="font-size: 13px; color: #64748b;">Official 350g Sample Physical Grading Protocol</div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Category 1: Primary Defects</h2>
+      <div style="font-size: 11px; color: #dc2626; margin-bottom: 8px;">Allowed for Specialty: 0</div>
+      <div class="row"><label>Full Black <span class="badge">(1:1)</span></label><input type="number" id="c1_black" min="0" value="0" oninput="calc()"></div>
+      <div class="row"><label>Full Sour <span class="badge">(1:1)</span></label><input type="number" id="c1_sour" min="0" value="0" oninput="calc()"></div>
+      <div class="row"><label>Dried Pod <span class="badge">(1:1)</span></label><input type="number" id="c1_pod" min="0" value="0" oninput="calc()"></div>
+      <div class="row"><label>Fungus-Damaged <span class="badge">(1:1)</span></label><input type="number" id="c1_fungus" min="0" value="0" oninput="calc()"></div>
+      <div class="row"><label>Foreign Matter <span class="badge">(1:1)</span></label><input type="number" id="c1_foreign" min="0" value="0" oninput="calc()"></div>
+      <div class="row"><label>Severe Insect (≥3) <span class="badge">(5:1)</span></label><input type="number" id="c1_insect" min="0" value="0" oninput="calc()"></div>
+    </div>
+
+    <div class="card">
+      <h2>Category 2: Secondary Defects</h2>
+      <div style="font-size: 11px; color: #64748b; margin-bottom: 8px;">Allowed for Specialty: ≤ 5 full points</div>
+      <div class="row"><label>Partial Black <span class="badge">(3:1)</span></label><input type="number" id="c2_part_black" min="0" value="0" oninput="calc()"></div>
+      <div class="row"><label>Partial Sour <span class="badge">(3:1)</span></label><input type="number" id="c2_part_sour" min="0" value="0" oninput="calc()"></div>
+      <div class="row"><label>Parchment / Hull <span class="badge">(5:1)</span></label><input type="number" id="c2_parch" min="0" value="0" oninput="calc()"></div>
+      <div class="row"><label>Floater <span class="badge">(5:1)</span></label><input type="number" id="c2_floater" min="0" value="0" oninput="calc()"></div>
+      <div class="row"><label>Immature / Quaker <span class="badge">(5:1)</span></label><input type="number" id="c2_immature" min="0" value="0" oninput="calc()"></div>
+      <div class="row"><label>Broken / Cut <span class="badge">(5:1)</span></label><input type="number" id="c2_broken" min="0" value="0" oninput="calc()"></div>
+      <div class="row"><label>Slight Insect (1-2) <span class="badge">(10:1)</span></label><input type="number" id="c2_insect" min="0" value="0" oninput="calc()"></div>
+      <div class="row" style="margin-top: 12px; border-top: 1px dashed #cbd5e1; padding-top: 8px;">
+        <label><b>Roast Quakers (100g)</b></label>
+        <input type="number" id="quakers" min="0" value="0" oninput="calc()">
+      </div>
+    </div>
+  </div>
+
+  <div class="results">
+    <div style="font-weight: bold; font-size: 14px;">Results Summary</div>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-val" id="cat1_pts">0</div><div class="stat-lbl">Cat 1 Points</div></div>
+      <div class="stat"><div class="stat-val" id="cat2_pts">0</div><div class="stat-lbl">Cat 2 Points</div></div>
+      <div class="stat"><div class="stat-val" id="total_pts">0</div><div class="stat-lbl">Total Defects</div></div>
+    </div>
+    <div class="grade-tag" id="grade_badge" style="background: #16a34a;">Grade 1: Specialty Grade</div>
+    <div id="grade_text" style="font-size: 13px; margin-top: 6px; color: #334155;">Meets all requirements for Specialty Coffee.</div>
+  </div>
+</div>
+
+<script>
+function v(id) { return Math.max(0, parseInt(document.getElementById(id).value) || 0); }
+function calc() {
+  const cat1 = Math.floor(v('c1_black')) + Math.floor(v('c1_sour')) + Math.floor(v('c1_pod')) + 
+               Math.floor(v('c1_fungus')) + Math.floor(v('c1_foreign')) + Math.floor(v('c1_insect') / 5);
+
+  const cat2 = Math.floor(v('c2_part_black') / 3) + Math.floor(v('c2_part_sour') / 3) + 
+               Math.floor(v('c2_parch') / 5) + Math.floor(v('c2_floater') / 5) + 
+               Math.floor(v('c2_immature') / 5) + Math.floor(v('c2_broken') / 5) + 
+               Math.floor(v('c2_insect') / 10);
+
+  const quakers = v('quakers');
+  const total = cat1 + cat2;
+
+  document.getElementById('cat1_pts').innerText = cat1;
+  document.getElementById('cat2_pts').innerText = cat2;
+  document.getElementById('total_pts').innerText = total;
+
+  const b = document.getElementById('grade_badge');
+  const t = document.getElementById('grade_text');
+
+  if (cat1 === 0 && cat2 <= 5 && quakers === 0) {
+    b.innerText = "Grade 1: Specialty Grade";
+    b.style.background = "#16a34a";
+    t.innerText = "Qualified: 0 Cat 1 defects, ≤ 5 Cat 2 defects, 0 quakers.";
+  } else if (cat1 === 0 && cat2 <= 8 && quakers <= 3) {
+    b.innerText = "Grade 2: Premium Grade";
+    b.style.background = "#0284c7";
+    t.innerText = "Commercial Premium: 0 Cat 1 defects, ≤ 8 Cat 2 defects, ≤ 3 quakers.";
+  } else if (total <= 23) {
+    b.innerText = "Grade 3: Exchange Grade";
+    b.style.background = "#d97706";
+    t.innerText = "Exchange standard commercial coffee (9–23 full defects).";
+  } else if (total <= 86) {
+    b.innerText = "Grade 4: Below Standard";
+    b.style.background = "#dc2626";
+    t.innerText = "Substandard commercial coffee (24–86 full defects).";
+  } else {
+    b.innerText = "Grade 5: Off-Grade";
+    b.style.background = "#475569";
+    t.innerText = "Rejected / off-grade coffee (> 86 full defects).";
+  }
+}
+calc();
+</script>
+</body>
+</html>
